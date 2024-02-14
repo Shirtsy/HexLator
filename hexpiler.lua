@@ -17,7 +17,7 @@ end
 local srFile = fs.open(getRunningPath() .. "symbol-registry.json", "r")
 local srRaw = textutils.unserialiseJSON(srFile.readAll())
 if not srFile then
-    print("Could not find symbol-registry.json in the current directory")
+    vPrint("Could not find symbol-registry.json in the current directory")
     return
 end
 
@@ -199,11 +199,11 @@ local function dump_table(t,indent)
     indent = indent or 0    
     for key, value in pairs(t) do
         if type(value) == "table" then
-            print(string.rep("  ", indent) .. key .. " = {")
+            vPrint(string.rep("  ", indent) .. key .. " = {")
             dump_table(value, indent + 1)
-            print(string.rep("  ", indent) .. "}")
+            vPrint(string.rep("  ", indent) .. "}")
         else
-            print(string.rep("  ", indent) .. key .. " = " .. tostring(value))
+            vPrint(string.rep("  ", indent) .. key .. " = " .. tostring(value))
         end
     end
 end
@@ -212,17 +212,17 @@ local function compileChunk(tokens)
     local output = {}
     for k,v in pairs(tokens) do
         if v["content"] == "%[" then
-            print("List start...")
+            vPrint("List start...")
             stack.push({})
         elseif v["content"] == "%]" then
-            print("... list end.")
+            vPrint("... list end.")
             local j = stack.pop()
             local t = stack.top()
             table.insert(t, j)
         else
             local t = stack.top()
             table.insert(t, v["value"])
-            print(k,v["start"],v["end"]," ",v["content"], v["value"])
+            vPrint(k,v["start"],v["end"]," ",v["content"], v["value"])
         end
     end
     --dump_table(myStack,0)
@@ -232,7 +232,7 @@ end
 
 local function compile(str, verbose)
     Verb = verbose
-    print("Compiling...")
+    vPrint("Compiling...")
     local searches = {
         ["symbols"] = tokenSearch(str, symbolRegistry),
         ["identifiers"] = tokenSearch(str, identRegistry)
@@ -253,14 +253,14 @@ local function writeToFocus(tab)
     --dump_table(tab,1)
     local focal_port = peripheral.find("focal_port")
     if not focal_port then
-        print("Cannot write! No focal port found.")
+        vPrint("Cannot write! No focal port found.")
     elseif not focal_port.hasFocus() then
-        print("Cannot write! No focus found.")
+        vPrint("Cannot write! No focus found.")
     elseif not focal_port.canWriteIota() then
-        print("Cannot write! This won't compile!")
+        vPrint("Cannot write! This won't compile!")
     else
         focal_port.writeIota(tab)
-        print("Compiled to focus!")
+        vPrint("Compiled to focus!")
     end
 end
 

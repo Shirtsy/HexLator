@@ -39,7 +39,7 @@ end
 local tArgs = { ... }
 if #tArgs == 0 then
     local programName = arg[0] or fs.getName(shell.getRunningProgram())
-    print("Usage: " .. programName .. " <path>")
+    vPrint("Usage: " .. programName .. " <path>")
     return
 end
 
@@ -47,7 +47,7 @@ end
 local sPath = shell.resolve(tArgs[1])
 local bReadOnly = fs.isReadOnly(sPath)
 if fs.exists(sPath) and fs.isDir(sPath) then
-    print("Cannot edit a directory.")
+    vPrint("Cannot edit a directory.")
     return
 end
 
@@ -434,12 +434,12 @@ local tMenuFuncs = {
         local ok, error = pcall(function()
             term.scroll()
             for _, sLine in ipairs(tLines) do
-                print(sLine)
+                vPrint(sLine)
             end
         end)
         term.redirect(screenTerminal)
         if not ok then
-            print(error)
+            vPrint(error)
         end
 
         while not printer.endPage() do
