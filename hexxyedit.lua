@@ -460,8 +460,8 @@ local tMenuFuncs = {
     -- Here's my custom function
     Etch = function()
         local fullProg = ""
-        for i,v in ipairs(tLines) do
-            fullProg = fullProg .." ".. v
+        for _,v in ipairs(tLines) do
+            fullProg = fullProg .. v .. "\n"
         end
         hexpiler.writeToFocus(hexpiler.compile(fullProg, false))
         redrawMenu()
