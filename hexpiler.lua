@@ -43,6 +43,18 @@ symbolRegistry["{"] = symbolRegistry["Introspection"]
 symbolRegistry["}"] = symbolRegistry["Retrospection"]
 symbolRegistry[">>"] = symbolRegistry["Flock's Disintegration"]
 
+local strippedRegistry = {}
+for k,v in pairs(srRaw) do
+    local sName =  stripString(k)
+    symbolRegistry[sName] = {
+        ["angles"] = v["pattern"],
+        ["startDir"] = v["direction"],
+    }
+end
+symbolRegistry["{"] = symbolRegistry["Introspection"]
+symbolRegistry["}"] = symbolRegistry["Retrospection"]
+symbolRegistry[">>"] = symbolRegistry["Flocks_Disintegration"]
+
 -- Given a string and start location, returns everything within a balanced set of parentheses
 local function getBalancedParens(s, startLoc)
     local str = string.match(s, "(%b())", startLoc)
@@ -230,18 +242,27 @@ local function compileChunk(tokens)
     return stack.top()
 end
 
-local function compile(str, verbose)
+local function compile(str, stripped, verbose)
+    if not stripped then
+        stripped = false
+    end
     gVerb = verbose
     vPrint("Compiling...")
+    local reg
+    if stripped then
+        reg = strippedRegistry
+    else
+        reg = symbolRegistry
+    end
     local searches = {
-        ["symbols"] = tokenSearch(str, symbolRegistry),
+        ["symbols"] = tokenSearch(str, reg),
         ["identifiers"] = tokenSearch(str, identRegistry)
     }
     for _,v in pairs(searches["identifiers"]) do
         setIdentValue(str, identRegistry, v)
     end
     for _,v in pairs(searches["symbols"]) do
-        setSymbolValue(str, symbolRegistry, v)
+        setSymbolValue(str, reg, v)
     end
     local tokens = sortTokens(combineTables(searches))
     local output = compileChunk(tokens)

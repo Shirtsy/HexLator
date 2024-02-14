@@ -17,7 +17,7 @@ local function stripString(iString)
     return rString
 end
 
---load raw symbol registry translation table
+--load raw symbol registry translation table from hexpiler
 local tKeywords = {}
 local symbolRegistry = {}
 local symbolCompletions = {}
@@ -462,11 +462,14 @@ local tMenuFuncs = {
     -- Here's my custom function
     Etch = function()
         local fullProg = ""
+        i = 0
         for _,v in ipairs(tLines) do
+            i = i+1
             fullProg = fullProg .. v .. "\n"
             print(v)
         end
-        hexpiler.writeToFocus(hexpiler.compile(fullProg, false))
+        hexpiler.writeToFocus(hexpiler.compile(fullProg, true, false))
+        sStatus = "Tried to write "..i.." line(s) to Focus"
         redrawMenu()
     end,
 
