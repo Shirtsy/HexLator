@@ -5,7 +5,7 @@ Hexpiler is a compiler for a modified .hexpattern format for Hex Casting that ru
 The Focal Port from https://github.com/SamsTheNerd/ducky-periphs is required to write to Foci.
 
 ## Installation
-Download and run the installer on a ComputerCraft computer:
+Download and run the installer on a ComputerCraft computer (this will replace the existing startup.lua file at root):
 ```
 wget https://raw.githubusercontent.com/Shirtsy/HexPiler/main/install_hexget.lua
 ```
