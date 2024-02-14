@@ -51,6 +51,8 @@ Numerical Reflection           //Pattern via name
 @gate("id")                    //Gate via string
 @entity_type("type")           //Entity type via string
 @iota_type("type")             //Iota type via string
+@mote("moteUuid", "itemID")    //Mote via strings
+@matrix(col, row, [matrix])    //Matrix
 ```
 
 Numerical Reflection and Bookkeepers are NOT currently available but will be added soon. Embed them in the meantime.
