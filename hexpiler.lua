@@ -1,3 +1,12 @@
+--controls all print outputs
+local gVerb = true
+
+local function vPrint(string)
+    if gVerb then
+        print(string)
+    end
+end
+
 local function getRunningPath()
     local runningProgram = shell.getRunningProgram()
     local programName = fs.getName(runningProgram)
@@ -221,7 +230,8 @@ local function compileChunk(tokens)
     return stack.top()
 end
 
-local function compile(str)
+local function compile(str, verbose)
+    Verb = verbose
     print("Compiling...")
     local searches = {
         ["symbols"] = tokenSearch(str, symbolRegistry),
@@ -261,4 +271,9 @@ local function test()
     writeToFocus(compile(contents))
 end
 
-return {compile = compile, writeToFocus = writeToFocus}
+return {
+    compile = compile,
+    writeToFocus = writeToFocus,
+    symbolRegistry = symbolRegistry,
+    identRegistry = identRegistry
+}
