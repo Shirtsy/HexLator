@@ -1,16 +1,19 @@
-local hexpiler = require("hexpiler")
-
 local function getRunningPath()
     local runningProgram = shell.getRunningProgram()
     local programName = fs.getName(runningProgram)
     return runningProgram:sub( 1, #runningProgram - #programName )
 end
 
--- Strips all non-alphanumerics plus underscores. Replaces +/- with p/n
+--load symbol-registry.json
+local srFile = fs.open(getRunningPath() .. "symbol-registry.json", "r")
+local srRaw = textutils.unserialiseJSON(srFile.readAll())
+if not srFile then
+    print("Could not find symbol-registry.json in the current directory")
+    return
+end
+
 local function stripString(iString)
     local rString,_ = string.gsub(iString," ","_")
-    rString,_ = string.gsub(rString,"-","n")
-    rString,_ = string.gsub(rString,"+","p")
     rString,_ = string.gsub(rString,"[^%w_]+","")
     return rString
 end
@@ -19,9 +22,12 @@ end
 local tKeywords = {}
 local symbolRegistry = {}
 local symbolCompletions = {}
-for k,_ in pairs(hexpiler.symbolRegistry) do
+for k,v in pairs(srRaw) do
     local sName = stripString(k)
-    symbolRegistry[sName] = true
+    symbolRegistry[sName] = {
+        ["angles"] = v["pattern"],
+        ["startDir"] = v["direction"]
+    }
     symbolCompletions[sName] = true
     tKeywords[sName] = true
 end
@@ -30,10 +36,25 @@ symbolRegistry["}"] = symbolRegistry["Retrospection"]
 symbolRegistry[">>"] = symbolRegistry["Flocks_Disintegration"]
 
 -- Create table of identifiers, non-symbol strings that become tokens
-local identRegistry = {}
-for k,_ in pairs(hexpiler.identRegistry) do
-    identRegistry[k] = true
-end
+local identRegistry = {
+    ["%("] = true,
+    ["%)"] = true,
+    ["null"] = true,
+    ["garbage"] = true,
+    ["true"] = true,
+    ["false"] = true,
+
+    ['%"'] = true,
+    ["%["] = true,
+    ["%]"] = true,
+    ["iota_type"] = true,
+    ["entity_type"] = true,
+    ["entity"] = true,
+    ["pattern"] = true,
+    ["gate"] = true,
+    ["vec"] = true,
+    ["num"] = true,
+}
 
 -- Get file to edit
 local tArgs = { ... }
@@ -194,7 +215,7 @@ local function save(_sPath, fWrite)
 end
 
 --local tKeywords =  symbolCompletions
-local tKeywords2 = identRegistry
+local tKeywords2 =  identRegistry
 for k,_ in pairs(tKeywords2) do
     symbolCompletions[k] = true
 end
@@ -459,11 +480,11 @@ local tMenuFuncs = {
 
     -- Here's my custom function
     Etch = function()
-        local fullProg = ""
-        for i,v in ipairs(tLines) do
-            fullProg = fullProg .. v
+        local focus = peripheral.find("focal_port")
+        if not focus then
+            sStatus = "No focal port attached"
+            return
         end
-        hexpiler.writeToFocus(hexpiler.compile(fullProg, false))
         redrawMenu()
     end,
 
