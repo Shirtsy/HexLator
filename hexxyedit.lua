@@ -1,4 +1,4 @@
-local version = "0.9"
+local version = "0.9.1"
 
 local hexpiler = require("hexpiler")
 
@@ -466,8 +466,10 @@ local tMenuFuncs = {
         for _,v in ipairs(tLines) do
             i = i+1
             fullProg = fullProg .. v .. "\n"
-            print(v)
         end
+        local file = fs.open("/debug.txt","w")
+        fs.write(file, fullProg)
+        fs.close(file)
         hexpiler.writeToFocus(hexpiler.compile(fullProg, true, false))
         sStatus = "Tried to write "..i.." line(s) to Focus"
         redrawMenu()
