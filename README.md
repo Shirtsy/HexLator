@@ -10,10 +10,10 @@ Download and run the installer on a ComputerCraft computer:
 wget https://raw.githubusercontent.com/Shirtsy/HexPiler/main/install_hexget.lua
 ```
 
-## Usage
+## Usage example
 Compile a .hexpattern into a Focus:
 ```
-hexget <url>
+hexget https://raw.githubusercontent.com/Shirtsy/HexPiler/main/example.hexpattern
 ```
 
 ## Syntax
