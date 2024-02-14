@@ -123,6 +123,25 @@ local identRegistry = {
         }
         return returnTable
     end,
+    ["@matrix"] = function(s, token)
+        local str = getBalancedParens(s, token["start"])
+        local valTable = splitCommas(str)
+        local returnTable =  {
+            ["col"] = tonumber(valTable[1]),
+            ["row"] = tonumber(valTable[2]),
+            ["matrix"] = tonumber(valTable[3])
+        }
+        return returnTable
+    end,
+    ["@mote"] = function(s, token)
+        local str = getBalancedParens(s, token["start"])
+        local valTable = splitCommas(str)
+        local returnTable =  {
+            ["moteUuid"] = tonumber(valTable[1]),
+            ["itemID"] = tonumber(valTable[2])
+        }
+        return returnTable
+    end,
     ["@num"] = function(s, token)
         local str = getBalancedParens(s, token["start"])
         return tonumber(str)
