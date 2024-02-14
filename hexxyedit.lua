@@ -462,6 +462,7 @@ local tMenuFuncs = {
         local fullProg = ""
         for _,v in ipairs(tLines) do
             fullProg = fullProg .. v .. "\n"
+            print(v)
         end
         hexpiler.writeToFocus(hexpiler.compile(fullProg, false))
         redrawMenu()
