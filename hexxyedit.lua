@@ -1,3 +1,5 @@
+local version = "0.8"
+
 local hexpiler = require("hexpiler")
 
 local function getRunningPath()
