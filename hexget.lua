@@ -1,13 +1,13 @@
 local function printUsage()
     local programName = arg[0] or fs.getName(shell.getRunningProgram())
-    vPrint("Usage:")
-    vPrint(programName .. " <url>")
-    vPrint(programName .. " run <url>")
+    print("Usage:")
+    print(programName .. " <url>")
+    print(programName .. " run <url>")
 end
 
 local version = "HexGet v1.0"
-vPrint(version)
-vPrint("-------------")
+print(version)
+print("-------------")
 sleep(0.5)
 
 local tArgs = { ... }
@@ -48,11 +48,11 @@ local function get(sUrl)
 
     local response = http.get(sUrl , nil , true)
     if not response then
-        vPrint("Failed.")
+        print("Failed.")
         return nil
     end
 
-    vPrint("Success.")
+    print("Success.")
 
     local sResponse = response.readAll()
     response.close()

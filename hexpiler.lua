@@ -1,9 +1,9 @@
 --controls all print outputs
 local gVerb = true
 
-local function vPrint(string)
+local function vPrint(s)
     if gVerb then
-        print(string)
+        print(s)
     end
 end
 
@@ -222,7 +222,7 @@ local function compileChunk(tokens)
         else
             local t = stack.top()
             table.insert(t, v["value"])
-            vPrint(k,v["start"],v["end"]," ",v["content"], v["value"])
+            if gVerb then print(k,v["start"],v["end"]," ",v["content"], v["value"]) end
         end
     end
     --dump_table(myStack,0)
@@ -231,7 +231,7 @@ local function compileChunk(tokens)
 end
 
 local function compile(str, verbose)
-    Verb = verbose
+    gVerb = verbose
     vPrint("Compiling...")
     local searches = {
         ["symbols"] = tokenSearch(str, symbolRegistry),
