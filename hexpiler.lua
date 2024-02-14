@@ -2,7 +2,7 @@
 local gVerb = true
 
 local function vPrint(s)
-    if gVerb then
+    if gVerb == true then
         print(s)
     end
 end
@@ -46,14 +46,14 @@ symbolRegistry[">>"] = symbolRegistry["Flock's Disintegration"]
 local strippedRegistry = {}
 for k,v in pairs(srRaw) do
     local sName =  stripString(k)
-    symbolRegistry[sName] = {
+    strippedRegistry[sName] = {
         ["angles"] = v["pattern"],
         ["startDir"] = v["direction"],
     }
 end
-symbolRegistry["{"] = symbolRegistry["Introspection"]
-symbolRegistry["}"] = symbolRegistry["Retrospection"]
-symbolRegistry[">>"] = symbolRegistry["Flocks_Disintegration"]
+strippedRegistry["{"] = strippedRegistry["Introspection"]
+strippedRegistry["}"] = strippedRegistry["Retrospection"]
+strippedRegistry[">>"] = strippedRegistry["Flocks_Disintegration"]
 
 -- Given a string and start location, returns everything within a balanced set of parentheses
 local function getBalancedParens(s, startLoc)
@@ -234,7 +234,7 @@ local function compileChunk(tokens)
         else
             local t = stack.top()
             table.insert(t, v["value"])
-            if gVerb then print(k,v["start"],v["end"]," ",v["content"], v["value"]) end
+            if gVerb == true then print(k,v["start"],v["end"]," ",v["content"], v["value"]) end
         end
     end
     --dump_table(myStack,0)
@@ -243,15 +243,12 @@ local function compileChunk(tokens)
 end
 
 local function compile(str, stripped, verbose)
-    if not stripped then
-        stripped = false
-    end
-    if verbose then
+    if verbose ~= nil then
         gVerb = verbose
     end
     vPrint("Compiling...")
     local reg
-    if stripped then
+    if stripped == true then
         reg = strippedRegistry
     else
         reg = symbolRegistry
