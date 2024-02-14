@@ -1,6 +1,9 @@
 # HexPiler
 Hexpiler is a compiler for a modified .hexpattern format for Hex Casting that runs in ComputerCraft, allowing you to automatically download and write iotas to a Focus.
 
+## Requirements
+The Focal Port from https://github.com/SamsTheNerd/ducky-periphs is rquired to write to Foci
+
 ## Installation
 Download and run the installer on a ComputerCraft computer:
 ```
