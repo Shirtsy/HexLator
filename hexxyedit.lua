@@ -1,4 +1,4 @@
-local version = "0.9.3"
+local version = "0.9.4"
 
 local hexpiler = require("hexpiler")
 
@@ -462,7 +462,7 @@ local tMenuFuncs = {
     -- Here's my custom function
     Etch = function()
         local fullProg = ""
-        i = 0
+        local i = 0
         for _,v in ipairs(tLines) do
             i = i+1
             fullProg = fullProg .. v .. "\n"
@@ -471,7 +471,7 @@ local tMenuFuncs = {
         --dfile.write(fullProg)
         --dfile.close()
         hexpiler.writeToFocus(hexpiler.compile(fullProg, true, false))
-        sStatus = "Tried to write "..i.." line(s) to Focus"
+        sStatus = "Tried to write "..#tLines.." line(s) to Focus"
         redrawMenu()
     end,
 
