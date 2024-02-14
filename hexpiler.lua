@@ -268,7 +268,7 @@ local function compile(str, stripped, verbose)
     end
     local tokens = sortTokens(combineTables(searches))
     local output = compileChunk(tokens)
-    print(#output)
+    --print(#output)
     return output
 end
 
