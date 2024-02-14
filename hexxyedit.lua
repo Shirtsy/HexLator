@@ -461,7 +461,7 @@ local tMenuFuncs = {
     Etch = function()
         local fullProg = ""
         for i,v in ipairs(tLines) do
-            fullProg = fullProg .. v
+            fullProg = fullProg .." ".. v
         end
         hexpiler.writeToFocus(hexpiler.compile(fullProg, false))
         redrawMenu()
