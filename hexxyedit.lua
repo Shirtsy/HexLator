@@ -1,4 +1,4 @@
-local version = "0.9.6"
+local version = "0.9.7"
 
 local hexpiler = require("hexpiler")
 
@@ -149,18 +149,15 @@ local function load(_sPath)
     tLines = {}
     if fs.exists(_sPath) then
         local file = io.open(_sPath, "r")
-        if file then
-            local sLine = file:read()
-        end
+---@diagnostic disable-next-line: need-check-nil
+        local sLine = file:read()
         while sLine do
             table.insert(tLines, sLine)
-            if file then
-                sLine = file:read()
-            end
+---@diagnostic disable-next-line: need-check-nil
+            sLine = file:read()
         end
-        if file then
-            file:close()
-        end
+---@diagnostic disable-next-line: need-check-nil
+        file:close()
     end
 
     if #tLines == 0 then
@@ -470,7 +467,6 @@ local tMenuFuncs = {
         --dfile.close()
         hexpiler.writeToFocus(hexpiler.compile(fullProg, true, false))
         sStatus = "Tried to write "..#tLines.." line(s) to Focus"
-        fullProg = ""
         redrawMenu()
     end,
 
