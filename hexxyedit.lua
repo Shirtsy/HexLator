@@ -1,4 +1,4 @@
-local version = "0.9.7"
+local version = "0.9.8"
 
 local hexpiler = require("hexpiler")
 
@@ -88,46 +88,12 @@ else
     stringColour = colours.white
 end
 
-local runHandler = [[multishell.setTitle(multishell.getCurrent(), %q)
-local current = term.current()
-local ok, err = load(%q, %q, nil, _ENV)
-if ok then ok, err = pcall(ok, ...) end
-term.redirect(current)
-term.setTextColor(term.isColour() and colours.yellow or colours.white)
-term.setBackgroundColor(colours.black)
-term.setCursorBlink(false)
-local _, y = term.getCursorPos()
-local _, h = term.getSize()
-if not ok then
-    printError(err)
-end
-if ok and y >= h then
-    term.scroll(1)
-end
-term.setCursorPos(1, h)
-if ok then
-    write("Program finished. ")
-end
-write("Press any key to continue")
-os.pullEvent('key')
-]]
-
 -- Menus
 local bMenu = false
 local nMenuItem = 1
 local tMenuItems = {}
 if not bReadOnly then
     table.insert(tMenuItems, "Save")
-end
-
---We don't want it to be able to 'run' hex patterns
-
---if shell.openTab then
---    table.insert(tMenuItems, "Run")
---end
-
-if peripheral.find("printer") then
-    table.insert(tMenuItems, "Print")
 end
 
 -- Adding in my own menu item here
@@ -372,86 +338,6 @@ local tMenuFuncs = {
                     sStatus = "Error saving to " .. sPath
                 end
             end
-        end
-        redrawMenu()
-    end,
-    Print = function()
-        local printer = peripheral.find("printer")
-        if not printer then
-            sStatus = "No printer attached"
-            return
-        end
-
-        local nPage = 0
-        local sName = fs.getName(sPath)
-        if printer.getInkLevel() < 1 then
-            sStatus = "Printer out of ink"
-            return
-        elseif printer.getPaperLevel() < 1 then
-            sStatus = "Printer out of paper"
-            return
-        end
-
-        local screenTerminal = term.current()
-        local printerTerminal = {
-            getCursorPos = printer.getCursorPos,
-            setCursorPos = printer.setCursorPos,
-            getSize = printer.getPageSize,
-            write = printer.write,
-        }
-        printerTerminal.scroll = function()
-            if nPage == 1 then
-                printer.setPageTitle(sName .. " (page " .. nPage .. ")")
-            end
-
-            while not printer.newPage() do
-                if printer.getInkLevel() < 1 then
-                    sStatus = "Printer out of ink, please refill"
-                elseif printer.getPaperLevel() < 1 then
-                    sStatus = "Printer out of paper, please refill"
-                else
-                    sStatus = "Printer output tray full, please empty"
-                end
-
-                term.redirect(screenTerminal)
-                redrawMenu()
-                term.redirect(printerTerminal)
-
-                sleep(0.5)
-            end
-
-            nPage = nPage + 1
-            if nPage == 1 then
-                printer.setPageTitle(sName)
-            else
-                printer.setPageTitle(sName .. " (page " .. nPage .. ")")
-            end
-        end
-
-        bMenu = false
-        term.redirect(printerTerminal)
-        local ok, error = pcall(function()
-            term.scroll()
-            for _, sLine in ipairs(tLines) do
-                print(sLine)
-            end
-        end)
-        term.redirect(screenTerminal)
-        if not ok then
-            print(error)
-        end
-
-        while not printer.endPage() do
-            sStatus = "Printer output tray full, please empty"
-            redrawMenu()
-            sleep(0.5)
-        end
-        bMenu = true
-
-        if nPage > 1 then
-            sStatus = "Printed " .. nPage .. " Pages"
-        else
-            sStatus = "Printed 1 Page"
         end
         redrawMenu()
     end,

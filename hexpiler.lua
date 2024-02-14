@@ -1,3 +1,5 @@
+local version = "0.9.0"
+
 --controls all print outputs
 local gVerb = true
 
@@ -221,7 +223,6 @@ local function dump_table(t,indent)
 end
 
 local function compileChunk(tokens)
-    local output = {}
     for k,v in pairs(tokens) do
         if v["content"] == "%[" then
             vPrint("List start...")
@@ -239,7 +240,9 @@ local function compileChunk(tokens)
     end
     --dump_table(myStack,0)
     --dump_table(output,1)
-    return stack.top()
+    local returnVal = stack.pop()
+    stack.push({})
+    return returnVal
 end
 
 local function compile(str, stripped, verbose)
@@ -265,7 +268,7 @@ local function compile(str, stripped, verbose)
     end
     local tokens = sortTokens(combineTables(searches))
     local output = compileChunk(tokens)
-    --print(#output)
+    print(#output)
     return output
 end
 
