@@ -246,7 +246,9 @@ local function compile(str, stripped, verbose)
     if not stripped then
         stripped = false
     end
-    gVerb = verbose
+    if verbose then
+        gVerb = verbose
+    end
     vPrint("Compiling...")
     local reg
     if stripped then
