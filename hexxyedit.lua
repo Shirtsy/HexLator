@@ -1,4 +1,4 @@
-local version = "0.8"
+local version = "0.9"
 
 local hexpiler = require("hexpiler")
 
