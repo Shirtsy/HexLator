@@ -279,7 +279,6 @@ local function writeToFocus(tab)
     elseif not focal_port.canWriteIota() then
         vPrint("Cannot write! This won't compile!")
     else
-        focal_port.writeIota({})
         focal_port.writeIota(tab)
         vPrint("Compiled to focus!")
     end

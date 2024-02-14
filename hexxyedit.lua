@@ -1,4 +1,4 @@
-local version = "0.9.4"
+local version = "0.9.5"
 
 local hexpiler = require("hexpiler")
 
@@ -462,10 +462,9 @@ local tMenuFuncs = {
     -- Here's my custom function
     Etch = function()
         local fullProg = ""
-        local i = 0
-        for _,v in ipairs(tLines) do
-            i = i+1
-            fullProg = fullProg .. v .. "\n"
+        fullProg = ""
+        for _,sLine in ipairs(tLines) do
+            fullProg = fullProg .. sLine .. "\n"
         end
         --local dfile = fs.open("/debug.txt","w")
         --dfile.write(fullProg)
