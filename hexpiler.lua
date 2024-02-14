@@ -203,20 +203,20 @@ local function compileChunk(tokens)
     local output = {}
     for k,v in pairs(tokens) do
         if v["content"] == "%[" then
-            print("Pushed...")
+            print("List start...")
             stack.push({})
         elseif v["content"] == "%]" then
-            print("Popped...")
+            print("... list end.")
             local j = stack.pop()
             local t = stack.top()
             table.insert(t, j)
         else
             local t = stack.top()
             table.insert(t, v["value"])
-            --print(k,v["start"],v["end"]," ",v["content"], v["value"])
+            print(k,v["start"],v["end"]," ",v["content"], v["value"])
         end
     end
-    dump_table(myStack,0)
+    --dump_table(myStack,0)
     --dump_table(output,1)
     return stack.top()
 end
