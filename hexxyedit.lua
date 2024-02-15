@@ -1,6 +1,6 @@
 local version = "0.9.8"
 
-local hexpiler = require("hexpiler")
+local hexlator = require("hexlator")
 
 local function getRunningPath()
     local runningProgram = shell.getRunningProgram()
@@ -17,11 +17,11 @@ local function stripString(iString)
     return rString
 end
 
---load raw symbol registry translation table from hexpiler
+--load raw symbol registry translation table from hexlator
 local tKeywords = {}
 local symbolRegistry = {}
 local symbolCompletions = {}
-for k,_ in pairs(hexpiler.symbolRegistry) do
+for k,_ in pairs(hexlator.symbolRegistry) do
     local sName = stripString(k)
     symbolRegistry[sName] = true
     symbolCompletions[sName] = true
@@ -33,7 +33,7 @@ symbolRegistry[">>"] = symbolRegistry["Flocks_Disintegration"]
 
 -- Create table of identifiers, non-symbol strings that become tokens
 local identRegistry = {}
-for k,_ in pairs(hexpiler.identRegistry) do
+for k,_ in pairs(hexlator.identRegistry) do
     identRegistry[k] = true
 end
 
@@ -351,7 +351,7 @@ local tMenuFuncs = {
         --local dfile = fs.open("/debug.txt","w")
         --dfile.write(fullProg)
         --dfile.close()
-        hexpiler.writeToFocus(hexpiler.compile(fullProg, true, false))
+        hexlator.writeToFocus(hexlator.compile(fullProg, true, false))
         sStatus = "Tried to write "..#tLines.." line(s) to Focus"
         redrawMenu()
     end,

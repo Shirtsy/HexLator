@@ -1,5 +1,5 @@
-# HexPiler
-Hexpiler is a compiler for Hex Casting hexes that runs in ComputerCraft. It comes packaged with HexGet, a utility to download and compile a hex to a focus, as well as HexxyEdit, an in-game hex editor. Both will compile a tweaked .hexpattern format that includes additional syntax for embedded iotas and macros.
+# HexLator
+HexLator is a compiler for Hex Casting hexes that runs in ComputerCraft. It comes packaged with HexGet, a utility to download and compile a hex to a focus, as well as HexxyEdit, an in-game hex editor. Both will compile a tweaked .hexpattern format that includes additional syntax for embedded iotas and macros.
 
 ## Requirements
 The Focal Port from https://github.com/SamsTheNerd/ducky-periphs is required to write to Foci.
@@ -7,13 +7,13 @@ The Focal Port from https://github.com/SamsTheNerd/ducky-periphs is required to 
 ## Installation
 Download and run the installer on a ComputerCraft computer (this will replace the existing startup.lua file at root):
 ```
-wget https://raw.githubusercontent.com/Shirtsy/HexPiler/main/install_hexpiler.lua
+wget https://raw.githubusercontent.com/Shirtsy/HexLator/main/install_hexlator.lua
 ```
 
 ## Usage example
 Compile a .hexpattern from the internet into a Focus:
 ```
-hexget https://raw.githubusercontent.com/Shirtsy/HexPiler/main/example.hexpattern
+hexget https://raw.githubusercontent.com/Shirtsy/HexLator/main/example.hexpattern
 ```
 
 ## Syntax

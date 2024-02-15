@@ -77,9 +77,9 @@ else
     local res = get(url)
     if not res then return end
 
-    local hexpiler = require("hexpiler")
-    local compiled = hexpiler.compile(res)
-    hexpiler.writeToFocus(compiled)
+    local hexlator = require("hexlator")
+    local compiled = hexlator.compile(res)
+    hexlator.writeToFocus(compiled)
 end
 
 return {version = version}
