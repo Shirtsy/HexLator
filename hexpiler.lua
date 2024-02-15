@@ -157,14 +157,17 @@ local identRegistry = {
 local stringProccessRegistry = {
     ["#file"] = function(s, token)
         local filenames = getBalancedParens(s, token["start"])
+        --strips spaces and newlines out of filenames
+        filenames = string.gsub(filenames," ","")
+        filenames = string.gsub(filenames,"\n","")
         local valTable = splitCommas(filenames)
         local insertStr = ""
         for i,fName in ipairs(valTable) do
-            --strips spaces out of filename
-            fName = string.gsub(fName," ","")
             vPrint("Inserting "..getRunningPath()..fName)
             local file = fs.open(getRunningPath()..fName, "r")
             local content = file.readAll()
+            -- Strip line comments from string before inserting
+            content = string.gsub(content, "//.-\n", "")
             file.close()
             insertStr = insertStr..content
         end
@@ -303,15 +306,16 @@ local function compile(str, stripped, verbose)
         reg = symbolRegistry
     end
 
-    -- Strip line comments from file
+    -- Strip line comments from string
     str = string.gsub(str, "//.-\n", "")
 
     -- Replace string with version of itself with the specified file contents inside instead
     vPrint("Parsing string processes...")
-    for _ in pairs(tokenSearch(str, stringProccessRegistry)) do
-        local search = sortTokens(tokenSearch(str, stringProccessRegistry))
+    local search = sortTokens(tokenSearch(str, stringProccessRegistry))
+    while #search > 0 do
         local single = table.remove(search)
         str = runTokenFunc(str, stringProccessRegistry, single)
+        search = sortTokens(tokenSearch(str, stringProccessRegistry))
     end
 
     local searches = {}
