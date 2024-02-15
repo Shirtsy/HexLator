@@ -275,6 +275,10 @@ local function compile(str, stripped, verbose)
     else
         reg = symbolRegistry
     end
+
+    -- Strip line comments from file
+    str = string.gsub(str, "//.-\n", "")
+
     local searches = {
         ["symbols"] = tokenSearch(str, reg),
         ["identifiers"] = tokenSearch(str, identRegistry)
