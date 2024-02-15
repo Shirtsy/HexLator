@@ -34,6 +34,8 @@ The following frequently used symbols have aliases you can use instead if you so
 
 Thus, a common pattern for embedding iotas looks like: ```{@vec(1, 2, 3)} >>```
 
+### Macros
+```#file(<filename>)``` will look for <filename> in the program's running directory and be replace itself with its contents. This allows for functionality akin to macros or limited functions.
 
 ### Iota Syntax
 Iotas are written in the following format:
@@ -55,7 +57,5 @@ Numerical Reflection           //Pattern via name
 @matrix(col, row, [matrix])    //Matrix
 ```
 
-### Macros
-```#file(<filename>)``` will look for <filename> in the program's running directory and be replace itself with its contents. This allows for functionality akin to macros or limited functions.
-
+### Notes
 Numerical Reflection and Bookkeepers are NOT currently available but will be added soon. Embed them in the meantime.
