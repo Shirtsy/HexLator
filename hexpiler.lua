@@ -156,14 +156,21 @@ local identRegistry = {
 
 local stringProccessRegistry = {
     ["#file"] = function(s, token)
-        local filename =  getBalancedParens(s, token["start"])
-        vPrint("Inserting "..getRunningPath()..filename)
-        local file = fs.open(getRunningPath()..filename, "r")
-        local content = file.readAll()
-        file.close()
+        local filenames = getBalancedParens(s, token["start"])
+        local valTable = splitCommas(filenames)
+        local insertStr = ""
+        for i,fName in ipairs(valTable) do
+            --strips spaces out of filename
+            fName = string.gsub(fName," ","")
+            vPrint("Inserting "..getRunningPath()..fName)
+            local file = fs.open(getRunningPath()..fName, "r")
+            local content = file.readAll()
+            file.close()
+            insertStr = insertStr..content
+        end
         local firstChar = token["start"]
-        local lastChar = token["end"] + #filename + 2
-        local out =  s:sub(1,firstChar-1).."\n"..content.."\n"..s:sub(lastChar+1)
+        local lastChar = token["end"] + #filenames + 2
+        local out =  s:sub(1,firstChar-1).."\n"..insertStr.."\n"..s:sub(lastChar+1)
 
         --local debug = fs.open(getRunningPath().."debug", "w")
         --debug.write(out)
