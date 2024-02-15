@@ -1,4 +1,4 @@
-local version = "0.9.2"
+local version = "0.9.3"
 
 --controls all print outputs
 local gVerb = true
@@ -154,11 +154,31 @@ local identRegistry = {
     ["%]"] = true,
 }
 
+local stringProccessRegistry = {
+    ["#file"] = function(s, token)
+        local filename =  getBalancedParens(s, token["start"])
+        vPrint("Inserting "..getRunningPath()..filename)
+        local file = fs.open(getRunningPath()..filename, "r")
+        local content = file.readAll()
+        file.close()
+        local firstChar = token["start"]
+        local lastChar = token["end"] + #filename + 2
+        local out =  s:sub(1,firstChar-1).."\n"..content.."\n"..s:sub(lastChar+1)
+
+        --local debug = fs.open(getRunningPath().."debug", "w")
+        --debug.write(out)
+        --debug.close()
+
+        return out
+    end,
+}
+
 -- Runs a function associated with a token's 'content' field from a given reg table
-local function setIdentValue(s, registry, token)
-    local tokenReg = registry[token["content"]]
-    if tokenReg ~= nil and tokenReg ~= true then
-        token["value"] = tokenReg(s, token)
+local function runTokenFunc(s, registry, token)
+    local tokenReturn = registry[token["content"]]
+    if tokenReturn ~= nil and tokenReturn ~= true then
+        token["value"] = tokenReturn(s, token)
+        return token["value"]
     end
 end
 
@@ -279,13 +299,26 @@ local function compile(str, stripped, verbose)
     -- Strip line comments from file
     str = string.gsub(str, "//.-\n", "")
 
-    local searches = {
-        ["symbols"] = tokenSearch(str, reg),
-        ["identifiers"] = tokenSearch(str, identRegistry)
-    }
-    for _,v in pairs(searches["identifiers"]) do
-        setIdentValue(str, identRegistry, v)
+    -- Replace string with version of itself with the specified file contents inside instead
+    vPrint("Parsing string processes...")
+    for i,v in pairs(tokenSearch(str, stringProccessRegistry)) do
+        print("==== "..i.." ====")
+        local search = sortTokens(tokenSearch(str, stringProccessRegistry))
+        local single = table.remove(search)
+        --dump_table(single)
+        str = runTokenFunc(str, stringProccessRegistry, single)
     end
+
+    local searches = {}
+
+    vPrint("Parsing identifiers...")
+    searches["identifiers"] = tokenSearch(str, identRegistry)
+    for _,v in pairs(searches["identifiers"]) do
+        runTokenFunc(str, identRegistry, v)
+    end
+
+    vPrint("Parsing symbols...")
+    searches["symbols"] = tokenSearch(str, reg)
     for _,v in pairs(searches["symbols"]) do
         setSymbolValue(str, reg, v)
     end
