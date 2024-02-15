@@ -55,7 +55,7 @@ Numerical Reflection           //Pattern via name
 ```
 
 ### Macros
-```#file(<filename>)``` will look for ```<filename>``` in the program's running directory and replace itself with its contents. This allows for functionality akin to macros or limited functions. The following is an example, assuming that ```example.hexpattern``` is to be compiled.
+```#file(<filename1>, <filename2>, ...)``` will look for ```<filename>```(s) in the program's running directory and replace itself with their contents in order. This allows for functionality akin to macros or limited functions. The following is an example, assuming that ```example.hexpattern``` is to be compiled.
 
 example.hexpattern:
 ```
