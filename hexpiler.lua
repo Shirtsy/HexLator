@@ -1,4 +1,4 @@
-local version = "0.9.1"
+local version = "0.9.2"
 
 --controls all print outputs
 local gVerb = true
@@ -104,8 +104,8 @@ local identRegistry = {
         local str = getBalancedParens(s, token["start"])
         local valTable = splitCommas(str)
         local returnTable =  {
-            ["startDir"] = tonumber(valTable[1]),
-            ["angles"] = tonumber(valTable[2]),
+            ["startDir"] = valTable[1],
+            ["angles"] = valTable[2],
         }
         return returnTable
     end,
