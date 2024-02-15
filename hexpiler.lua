@@ -158,7 +158,7 @@ local stringProccessRegistry = {
     ["#file"] = function(s, token)
         local filename =  getBalancedParens(s, token["start"])
         vPrint("Inserting "..getRunningPath()..filename)
-        local file = fs.open(getRunningPath()..filename, "r")
+        local file = fs.open(getRunningPath().."/lib/"..filename, "r")
         local content = file.readAll()
         file.close()
         local firstChar = token["start"]
