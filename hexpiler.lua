@@ -1,4 +1,4 @@
-local version = "0.9.0"
+local version = "0.9.1"
 
 --controls all print outputs
 local gVerb = true
