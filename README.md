@@ -35,7 +35,34 @@ The following frequently used symbols have aliases you can use instead if you so
 Thus, a common pattern for embedding iotas looks like: ```{@vec(1, 2, 3)} >>```
 
 ### Macros
-```#file(<filename>)``` will look for ```<filename>``` in the program's running directory and be replace itself with its contents. This allows for functionality akin to macros or limited functions.
+```#file(<filename>)``` will look for ```<filename>``` in the program's running directory and replace itself with its contents. This allows for functionality akin to macros or limited functions.
+Example:
+``` example.hexpattern
+{@num(10)} >>
+#file(counter.hexpattern)
+```
+``` counter.hexpattern
+{
+    Jester's Gambit
+    Gemini Gambit
+}
+{
+    Gemini Decomposition
+    Abacus Purification
+    Integration Distillation
+}
+Single's Purification
+Thoth's Gambit
+@pattern(WEST,ae)
+{
+    >>
+}
+Jester's Gambit
+Thoth's Gambit
+Vacant Reflection
+Jester's Gambit
+Hermes' Gambit
+```
 
 ### Iota Syntax
 Iotas are written in the following format:
