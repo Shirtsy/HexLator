@@ -158,7 +158,7 @@ local stringProccessRegistry = {
     ["#file"] = function(s, token)
         local filename =  getBalancedParens(s, token["start"])
         vPrint("Inserting "..getRunningPath()..filename)
-        local file = fs.open(getRunningPath().."/lib/"..filename, "r")
+        local file = fs.open(getRunningPath()..filename, "r")
         local content = file.readAll()
         file.close()
         local firstChar = token["start"]
@@ -301,11 +301,9 @@ local function compile(str, stripped, verbose)
 
     -- Replace string with version of itself with the specified file contents inside instead
     vPrint("Parsing string processes...")
-    for i,v in pairs(tokenSearch(str, stringProccessRegistry)) do
-        print("==== "..i.." ====")
+    for _ in pairs(tokenSearch(str, stringProccessRegistry)) do
         local search = sortTokens(tokenSearch(str, stringProccessRegistry))
         local single = table.remove(search)
-        --dump_table(single)
         str = runTokenFunc(str, stringProccessRegistry, single)
     end
 

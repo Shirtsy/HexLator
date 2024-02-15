@@ -3,6 +3,7 @@ shell.execute("wget", "https://raw.githubusercontent.com/Shirtsy/HexPiler/main/h
 shell.execute("wget", "https://raw.githubusercontent.com/Shirtsy/HexPiler/main/hexget.lua", "/programfiles/hexget/hexget.lua")
 shell.execute("wget", "https://raw.githubusercontent.com/Shirtsy/HexPiler/main/symbol-registry.json", "/programfiles/hexget/symbol-registry.json")
 shell.execute("wget", "https://raw.githubusercontent.com/Shirtsy/HexPiler/main/hexxyedit.lua", "/programfiles/hexget/hexxyedit.lua")
+shell.execute("mkdir", "/programfiles/hexget/lib")
 shell.execute("delete", "/startup.lua")
 local file = fs.open("startup.lua","w")
 file.write('shell.setAlias("hexget", "/programfiles/hexget/hexget.lua") shell.setAlias("hexxyedit", "/programfiles/hexget/hexxyedit.lua")')
