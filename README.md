@@ -7,7 +7,7 @@ The Focal Port from https://github.com/SamsTheNerd/ducky-periphs is required to 
 ## Installation
 Download and run the installer on a ComputerCraft computer (this will replace the existing startup.lua file at root):
 ```
-wget https://raw.githubusercontent.com/Shirtsy/HexPiler/main/install_hexget.lua
+wget https://raw.githubusercontent.com/Shirtsy/HexPiler/main/install_hexpiler.lua
 ```
 
 ## Usage example
@@ -54,5 +54,8 @@ Numerical Reflection           //Pattern via name
 @mote("moteUuid", "itemID")    //Mote via strings
 @matrix(col, row, [matrix])    //Matrix
 ```
+
+### Macros
+```#file(<filename>)``` will look for <filename> in the program's running directory and be replace itself with its contents. This allows for functionality akin to macros or limited functions.
 
 Numerical Reflection and Bookkeepers are NOT currently available but will be added soon. Embed them in the meantime.
