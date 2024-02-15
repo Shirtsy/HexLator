@@ -34,15 +34,35 @@ The following frequently used symbols have aliases you can use instead if you so
 
 Thus, a common pattern for embedding iotas looks like: ```{@vec(1, 2, 3)} >>```
 
+### Iota Syntax
+Iotas are written in the following format:
+```
+@num(1)                        //Number
+@vec(1,2,3)                    //Vector
+[1, @vec(1, 2, 3)]             //List
+@entity("uuid")                //Entity 
+@null                          //Null
+@garbage                       //Garbage
+@true                          //Bool
+@pattern(NORTHEAST,qaq)        //Symbol via pattern
+Numerical Reflection           //Pattern via name
+@str(hello world)              //String
+@gate("id")                    //Gate via string
+@entity_type("type")           //Entity type via string
+@iota_type("type")             //Iota type via string
+@mote("moteUuid", "itemID")    //Mote via strings
+@matrix(col, row, [matrix])    //Matrix
+```
+
 ### Macros
-```#file(<filename>)``` will look for ```<filename>``` in the program's running directory and replace itself with its contents. This allows for functionality akin to macros or limited functions.
+```#file(<filename>)``` will look for ```<filename>``` in the program's running directory and replace itself with its contents. This allows for functionality akin to macros or limited functions. The following is an example, assuming that ```example.hexpattern``` is to be compiled.
 
 example.hexpattern:
 ```
 {@num(10)} >>
 #file(counter.hexpattern)
 ```
-counter.hexpattern
+counter.hexpattern:
 ```
 {
     Jester's Gambit
@@ -68,26 +88,6 @@ Hermes' Gambit
 Output:
 ```
 [0,1,2,3,4,5,6,7,8,9]
-```
-
-### Iota Syntax
-Iotas are written in the following format:
-```
-@num(1)                        //Number
-@vec(1,2,3)                    //Vector
-[1, @vec(1, 2, 3)]             //List
-@entity("uuid")                //Entity 
-@null                          //Null
-@garbage                       //Garbage
-@true                          //Bool
-@pattern(NORTHEAST,qaq)        //Symbol via pattern
-Numerical Reflection           //Pattern via name
-@str(hello world)              //String
-@gate("id")                    //Gate via string
-@entity_type("type")           //Entity type via string
-@iota_type("type")             //Iota type via string
-@mote("moteUuid", "itemID")    //Mote via strings
-@matrix(col, row, [matrix])    //Matrix
 ```
 
 ### Notes
