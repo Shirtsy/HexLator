@@ -184,16 +184,20 @@ local identRegistry = {
         }
         local str = getBalancedParens(s, token["start"])
         local angles
-        for i=1,#str-1 do
-            local sub = str:sub(i, i+1)
-            angles = angles..combos[sub]
+        if str == "v" then
+            angles = "a"
+        else
+            for i=1,#str-1 do
+                local sub = str:sub(i, i+1)
+                angles = angles..combos[sub]
+            end
         end
         local returnTable =  {
             ["startDir"] = "EAST",
             ["angles"] = angles,
         }
         return returnTable
-    end
+    end,
 }
 
 local stringProccessRegistry = {
@@ -205,8 +209,8 @@ local stringProccessRegistry = {
         local valTable = splitCommas(filenames)
         local insertStr = ""
         for i,fName in ipairs(valTable) do
-            vPrint("Inserting "..getRunningPath()..fName)
-            local file = fs.open(getRunningPath()..fName, "r")
+            vPrint("Inserting "..fName)
+            local file = fs.open(fName, "r")
             local content = file.readAll()
             -- Strip line comments from string before inserting
             content = string.gsub(content, "//.-\n", "")
