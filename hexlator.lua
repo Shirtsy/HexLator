@@ -156,7 +156,7 @@ local identRegistry = {
     end,
     ["%["] = true,
     ["%]"] = true,
-    ["Bookkeeper's Gambit"] = function(s, token)
+    ["Numerical Reflection"] = function(s, token)
         local str = getBalancedParens(s, token["start"])
         local num = tonumber(str)
         local angles
