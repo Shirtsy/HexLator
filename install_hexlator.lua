@@ -17,7 +17,7 @@ else
     install_path = args[2].."/hexlator/"
 end
 
-shell.execute("delete", "/programfiles/hexlator")
+shell.execute("delete", install_path)
 
 shell.execute("wget", raw_url.."hexlator.lua", install_path.."hexlator.lua")
 shell.execute("wget", raw_url.."hexget.lua", install_path.."hexget.lua")
@@ -26,6 +26,6 @@ shell.execute("wget", raw_url.."hexxyedit.lua", install_path.."hexxyedit.lua")
 
 shell.execute("delete", "/startup.lua")
 local file = fs.open("startup.lua","w")
-file.write('shell.setAlias("hexget", "/programfiles/hexlator/hexget.lua") shell.setAlias("hexxyedit", "/programfiles/hexlator/hexxyedit.lua")')
+file.write(string.format('shell.setAlias("hexget", "%shexget.lua") shell.setAlias("hexxyedit", "%shexxyedit.lua")',install_path,install_path))
 file.close()
 os.reboot()
