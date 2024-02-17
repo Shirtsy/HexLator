@@ -59,8 +59,8 @@ strippedRegistry[">>"] = strippedRegistry["Flocks_Disintegration"]
 
 -- Given a string and start location, returns everything within a balanced set of parentheses
 local function getBalancedParens(s, startLoc)
-    local str = string.match(s, "(%b())", startLoc)
-    return string.sub(str, 2, -2)
+    local firstC, lastC, str = string.find(s, "(%b())", startLoc)
+    return string.sub(str, 2, -2), firstC, lastC
 end
 
 -- Given a string, returns a table of strings with commas as delim
@@ -181,13 +181,37 @@ local stringProccessRegistry = {
 
         return out
     end,
+    ["#def"] = function(s, token, reg)
+        local funcName,_,lastC1 = getBalancedParens(s, token["start"])
+        local funcBody,_,lastC2 = getBalancedParens(s, lastC1)
+        local out = s:sub(1,token["start"]-1) .. s:sub(lastC2+1)
+
+        reg["$"..funcName] = function(s, token)
+            -- print("Found!")
+            local firstChar = token["start"]
+            local lastChar = token["end"] + 1
+            local out =  s:sub(1,firstChar-1).."\n"..funcBody.."\n"..s:sub(lastChar+1)
+
+            local debug = fs.open(getRunningPath().."debug", "w")
+            debug.write(out)
+            debug.close()
+
+            return out
+        end
+
+        --local debug = fs.open(getRunningPath().."debug", "w")
+        --debug.write(out)
+        --debug.close()
+
+        return out
+    end
 }
 
 -- Runs a function associated with a token's 'content' field from a given reg table
 local function runTokenFunc(s, registry, token)
-    local tokenReturn = registry[token["content"]]
-    if tokenReturn ~= nil and tokenReturn ~= true then
-        token["value"] = tokenReturn(s, token)
+    local tokenFunc = registry[token["content"]]
+    if tokenFunc ~= nil and tokenFunc ~= true then
+        token["value"] = tokenFunc(s, token, registry)
         return token["value"]
     end
 end
