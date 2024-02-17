@@ -61,7 +61,8 @@ strippedRegistry[">>"] = strippedRegistry["Flocks_Disintegration"]
 strippedRegistry["Bookkeepers_Gambit"] = nil
 strippedRegistry["Numerical_Reflection"] = nil
 
--- Given a string and start location, returns everything within a balanced set of parentheses
+-- Given a string and start location, returns everything within a balanced set of parentheses, as well
+-- as the start and end locations
 local function getBalancedParens(s, startLoc)
     local firstC, lastC, str = string.find(s, "(%b())", startLoc)
     return string.sub(str, 2, -2), firstC, lastC
@@ -200,6 +201,8 @@ local identRegistry = {
     end,
 }
 
+
+--Index of tokens that process the overall program string, and thus have to occur before other tokenization
 local stringProccessRegistry = {
     ["#file"] = function(s, token)
         local filenames = getBalancedParens(s, token["start"])
@@ -234,7 +237,6 @@ local stringProccessRegistry = {
         local out = s:sub(1,token["start"]-1) .. s:sub(lastC2+1)
 
         reg["$"..funcName] = function(s, token)
-            -- print("Found!")
             local out2 =  s:sub(1,token["start"]-1).."\n"..funcBody.."\n"..s:sub(token["end"]+2)
             return out2
         end
@@ -369,7 +371,7 @@ local function compile(str, stripped, verbose)
     -- Strip line comments from string
     str = string.gsub(str, "//.-\n", "")
 
-    -- Replace string with version of itself with the specified file contents inside instead
+    -- Replace string with version of itself with the specified file contents/function inside instead
     vPrint("Parsing string processes...")
     local search = sortTokens(tokenSearch(str, stringProccessRegistry))
     while #search > 0 do
