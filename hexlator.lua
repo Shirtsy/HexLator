@@ -44,6 +44,8 @@ end
 symbolRegistry["{"] = symbolRegistry["Introspection"]
 symbolRegistry["}"] = symbolRegistry["Retrospection"]
 symbolRegistry[">>"] = symbolRegistry["Flock's Disintegration"]
+symbolRegistry["Bookkeeper's Gambit"] = nil
+symbolRegistry["Numerical Reflection"] = nil
 
 local strippedRegistry = {}
 for k,v in pairs(srRaw) do
@@ -56,6 +58,8 @@ end
 strippedRegistry["{"] = strippedRegistry["Introspection"]
 strippedRegistry["}"] = strippedRegistry["Retrospection"]
 strippedRegistry[">>"] = strippedRegistry["Flocks_Disintegration"]
+strippedRegistry["Bookkeepers_Gambit"] = nil
+strippedRegistry["Numerical_Reflection"] = nil
 
 -- Given a string and start location, returns everything within a balanced set of parentheses
 local function getBalancedParens(s, startLoc)
@@ -152,6 +156,25 @@ local identRegistry = {
     end,
     ["%["] = true,
     ["%]"] = true,
+    ["Bookkeeper's Gambit"] = function(s, token)
+        local str = getBalancedParens(s, token["start"])
+        local num = tonumber(str)
+        local angles
+        if num >= 0 then
+            angles = "aqaa"
+        elseif num < 0 then
+            num = num * -1
+            angles = "dedd"
+        end
+        for i=0,num do
+            angles = angles .. "w"
+        end
+        local returnTable =  {
+            ["startDir"] = "WEST",
+            ["angles"] = angles,
+        }
+        return returnTable
+    end,
 }
 
 local stringProccessRegistry = {
