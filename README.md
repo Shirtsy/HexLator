@@ -54,16 +54,21 @@ Numerical Reflection           //Pattern via name
 @matrix(col, row, [matrix])    //Matrix
 ```
 
-### Macros
-```#file(<filename1>, <filename2>, ...)``` will look for ```<filename>```(s) in the program's running directory and replace itself with their contents in order. This allows for functionality akin to macros or limited functions. The following is an example, assuming that ```example.hexpattern``` is to be compiled.
+### Macros/Functions
+```#def(<name>)(<body>)``` will result in all instances of ```$<name>``` being replaced with ```<body>```. This can be paired with ```#file``` to load a 'library' of functions from another file to be made available in your current file.
+
+```#file(<filename1>, <filename2>, ...)``` will look for ```<filename>```(s) in the program's running directory and replace itself with their contents in order. This can be used to directly insert data at a location, but is more commonly used to include 'libraries'. The following is an example, assuming that ```example.hexpattern``` is to be compiled.
 
 example.hexpattern:
 ```
-{@num(10)} >>
 #file(counter.hexpattern)
+
+{@num(10)} >>
+$return_list
 ```
 counter.hexpattern:
 ```
+#def(return_list)(
 {
     Jester's Gambit
     Gemini Gambit
@@ -84,6 +89,7 @@ Thoth's Gambit
 Vacant Reflection
 Jester's Gambit
 Hermes' Gambit
+)
 ```
 Output:
 ```
