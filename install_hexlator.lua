@@ -24,7 +24,6 @@ shell.execute("wget", raw_url.."hexget.lua", install_path.."hexget.lua")
 shell.execute("wget", raw_url.."symbol-registry.json", install_path.."symbol-registry.json")
 shell.execute("wget", raw_url.."hexxyedit.lua", install_path.."hexxyedit.lua")
 
-shell.execute("mkdir", "/programfiles/hexlator/lib")
 shell.execute("delete", "/startup.lua")
 local file = fs.open("startup.lua","w")
 file.write('shell.setAlias("hexget", "/programfiles/hexlator/hexget.lua") shell.setAlias("hexxyedit", "/programfiles/hexlator/hexxyedit.lua")')
