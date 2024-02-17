@@ -175,6 +175,25 @@ local identRegistry = {
         }
         return returnTable
     end,
+    ["Bookkeeper's Gambit"] = function(s, token)
+        local combos ={
+            ["--"] = "w",
+            ["-v"] = "ea",
+            ["vv"] = "da",
+            ["v-"] = "e"
+        }
+        local str = getBalancedParens(s, token["start"])
+        local angles
+        for i=1,#str-1 do
+            local sub = str:sub(i, i+1)
+            angles = angles..combos[sub]
+        end
+        local returnTable =  {
+            ["startDir"] = "EAST",
+            ["angles"] = angles,
+        }
+        return returnTable
+    end
 }
 
 local stringProccessRegistry = {
