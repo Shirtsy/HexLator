@@ -216,7 +216,7 @@ local stringProccessRegistry = {
             local file = fs.open(fName, "r")
             local content = file.readAll()
             -- Strip line comments from string before inserting
-            content = string.gsub(content, "//.-\n", "")
+            content = string.gsub(content, "// .-\n", "")
             file.close()
             insertStr = insertStr..content
         end
@@ -233,26 +233,39 @@ local stringProccessRegistry = {
     ["#wget"] = function(s, token)
         local fileName,_,lastC1 = getBalancedParens(s, token["start"])
         local url,_,lastC2 = getBalancedParens(s, lastC1)
+        --strip out newlines
+        fileName = string.gsub(fileName,"\n","")
+        url = string.gsub(url,"\n","")
 
-        local filePath = fileName
-        print(filePath)
-        shell.run("delete", filePath)
-        shell.run("wget", url, filePath)
+        local filePath = "/"..fileName
+        if fs.exists(filePath) then
+            vPrint("Deleting "..filePath.."...")
+            shell.run("delete", filePath)
+        end
+
+        vPrint("Downloading "..url)
+        shell.run(string.format("wget %s %s", url, filePath))
 
         vPrint("Inserting "..fileName)
         local file = fs.open(filePath, "r")
         local content = file.readAll()
         -- Strip line comments from string before inserting
-        content = string.gsub(content, "//.-\n", "")
+        content = string.gsub(content, "// .-\n", "")
         file.close()
-
+        
         local out =  s:sub(1,token["start"]-1).."\n"..content.."\n"..s:sub(lastC2+1)
+
+        local debug = fs.open(getRunningPath().."debug", "w")
+        debug.write(out)
+        debug.close()
+
         return out
     end,
     ["#def"] = function(s, token, reg)
         local funcName,_,lastC1 = getBalancedParens(s, token["start"])
         local funcBody,_,lastC2 = getBalancedParens(s, lastC1)
-        funcBody = string.gsub(funcBody, "//.-\n", "")
+        -- Strip line comments from string before inserting
+        funcBody = string.gsub(funcBody, "// .-\n", "")
         local out = s:sub(1,token["start"]-1) .. s:sub(lastC2+1)
 
         reg["$"..funcName] = function(s, token)
@@ -388,7 +401,7 @@ local function compile(str, stripped, verbose)
     end
 
     -- Strip line comments from string
-    str = string.gsub(str, "//.-\n", "")
+    str = string.gsub(str, "// .-\n", "")
 
     -- Replace string with version of itself with the specified file contents/function inside instead
     vPrint("Parsing string processes...")
