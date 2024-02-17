@@ -234,11 +234,19 @@ local stringProccessRegistry = {
         local fileName,_,lastC1 = getBalancedParens(s, token["start"])
         local url,_,lastC2 = getBalancedParens(s, lastC1)
 
-        local filePath = getRunningPath().."/lib/"..fileName
+        local filePath = fileName
         print(filePath)
         shell.run("delete", filePath)
         shell.run("wget", url, filePath)
-        local out = s:sub(1,token["start"]-1) .. s:sub(lastC2+1)
+
+        vPrint("Inserting "..fileName)
+        local file = fs.open(filePath, "r")
+        local content = file.readAll()
+        -- Strip line comments from string before inserting
+        content = string.gsub(content, "//.-\n", "")
+        file.close()
+
+        local out =  s:sub(1,token["start"]-1).."\n"..content.."\n"..s:sub(lastC2+1)
         return out
     end,
     ["#def"] = function(s, token, reg)
