@@ -2,7 +2,6 @@ local function printUsage()
     local programName = arg[0] or fs.getName(shell.getRunningProgram())
     print("Usage:")
     print(programName .. " <url>")
-    print(programName .. " run <url>")
 end
 
 local version = "HexGet v1.0"
