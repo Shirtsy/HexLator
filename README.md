@@ -65,6 +65,8 @@ Numerical Reflection           //Pattern via name
 
 ```#file(<filename1>, <filename2>, ...)``` will look for ```<filename>```(s) and replace itself with their contents in order. This can be used to directly insert data at a given position, but is more commonly used to include 'libraries'. The following is an example, assuming that ```example.hexpattern``` is to be compiled.
 
+```#wget(<filepath>)(<url>)``` will attempt to use the wget utility packaged with the default ComputerCraft ROM to download a given file at time of compilation (overwriting any existing ones). ```#file``` is still necessary to load the file afterwards, however.
+
 example.hexpattern:
 ```
 #file(counter.hexpattern)

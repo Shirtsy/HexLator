@@ -235,6 +235,7 @@ local stringProccessRegistry = {
         local url,_,lastC2 = getBalancedParens(s, lastC1)
 
         local filePath = getRunningPath().."/lib/"..fileName
+        print(filePath)
         shell.run("delete", filePath)
         shell.run("wget", url, filePath)
         local out = s:sub(1,token["start"]-1) .. s:sub(lastC2+1)
