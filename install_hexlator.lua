@@ -1,8 +1,29 @@
-shell.execute("delete", "/programfiles/hexget")
-shell.execute("wget", "https://raw.githubusercontent.com/Shirtsy/HexLator/main/hexlator.lua", "/programfiles/hexlator/hexlator.lua")
-shell.execute("wget", "https://raw.githubusercontent.com/Shirtsy/HexLator/main/hexget.lua", "/programfiles/hexlator/hexget.lua")
-shell.execute("wget", "https://raw.githubusercontent.com/Shirtsy/HexLator/main/symbol-registry.json", "/programfiles/hexlator/symbol-registry.json")
-shell.execute("wget", "https://raw.githubusercontent.com/Shirtsy/HexLator/main/hexxyedit.lua", "/programfiles/hexlator/hexxyedit.lua")
+local args = {...}
+local branch
+if not args[1] then
+    branch = "main"
+elseif args[1] == "main" or args[1] == "dev" then
+    branch = args[1]
+else
+    print("Usage: install_hexlator [main|dev] [install path]")
+    shell.exit()
+end
+local raw_url = string.format("https://raw.githubusercontent.com/Shirtsy/HexLator/%s/", branch)
+
+local install_path
+if not args[2] then
+    install_path = "/programfiles/hexlator/"
+else
+    install_path = args[2].."/hexlator/"
+end
+
+shell.execute("delete", "/programfiles/hexlator")
+
+shell.execute("wget", raw_url.."hexlator.lua", install_path.."hexlator.lua")
+shell.execute("wget", raw_url.."hexget.lua", install_path.."hexget.lua")
+shell.execute("wget", raw_url.."symbol-registry.json", install_path.."symbol-registry.json")
+shell.execute("wget", raw_url.."hexxyedit.lua", install_path.."hexxyedit.lua")
+
 shell.execute("mkdir", "/programfiles/hexlator/lib")
 shell.execute("delete", "/startup.lua")
 local file = fs.open("startup.lua","w")
