@@ -230,6 +230,7 @@ local stringProccessRegistry = {
     ["#def"] = function(s, token, reg)
         local funcName,_,lastC1 = getBalancedParens(s, token["start"])
         local funcBody,_,lastC2 = getBalancedParens(s, lastC1)
+        funcBody = string.gsub(funcBody, "//.-\n", "")
         local out = s:sub(1,token["start"]-1) .. s:sub(lastC2+1)
 
         reg["$"..funcName] = function(s, token)
