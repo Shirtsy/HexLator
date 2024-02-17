@@ -230,6 +230,16 @@ local stringProccessRegistry = {
 
         return out
     end,
+    ["#wget"] = function(s, token)
+        local fileName,_,lastC1 = getBalancedParens(s, token["start"])
+        local url,_,lastC2 = getBalancedParens(s, lastC1)
+
+        local filePath = getRunningPath().."/lib/"..fileName
+        shell.run("delete", filePath)
+        shell.run("wget", url, filePath)
+        local out = s:sub(1,token["start"]-1) .. s:sub(lastC2+1)
+        return out
+    end,
     ["#def"] = function(s, token, reg)
         local funcName,_,lastC1 = getBalancedParens(s, token["start"])
         local funcBody,_,lastC2 = getBalancedParens(s, lastC1)
