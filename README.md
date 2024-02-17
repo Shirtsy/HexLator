@@ -25,6 +25,12 @@ Mind's Reflection
 Compass Purification
 ```
 
+Bookkeeper's Gambit and Numerical Reflection are used as such. The latter supports positive and negative integers:
+```
+Bookkeeper's Gambit(-vv---)
+Numerical Reflection(-367)
+```
+
 The following frequently used symbols have aliases you can use instead if you so choose:
 ```
 {  = Introspection
@@ -95,6 +101,3 @@ Output:
 ```
 [0,1,2,3,4,5,6,7,8,9]
 ```
-
-### Notes
-Numerical Reflection and Bookkeepers are NOT currently available but will be added soon. Embed them in the meantime.
