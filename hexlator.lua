@@ -188,18 +188,9 @@ local stringProccessRegistry = {
 
         reg["$"..funcName] = function(s, token)
             -- print("Found!")
-            local out =  s:sub(1,token["start"]-1).."\n"..funcBody.."\n"..s:sub(token["end"]+2)
-
-            --local debug = fs.open(getRunningPath().."debug", "w")
-            --debug.write(out)
-            --debug.close()
-
-            return out
+            local out2 =  s:sub(1,token["start"]-1).."\n"..funcBody.."\n"..s:sub(token["end"]+2)
+            return out2
         end
-
-        --local debug = fs.open(getRunningPath().."debug", "w")
-        --debug.write(out)
-        --debug.close()
 
         return out
     end
