@@ -101,6 +101,19 @@ local identRegistry = {
         local str = getBalancedParens(s, token["start"])
         return {["entityType"] = str}
     end,
+    ["@item_type"] = function(s, token)
+        local str = getBalancedParens(s, token["start"])
+        local valTable = splitCommas(str)
+        local bools = {
+            ["true"] = true,
+            ["false"] = false
+        }
+        local returnTable =  {
+            ["itemType"] = valTable[1],
+            ["isItem"] =  bools[valTable[2]],
+        }
+        return returnTable
+    end,
     ["@entity"] = function(s, token)
         local str = getBalancedParens(s, token["start"])
         return {["uuid"] = str}

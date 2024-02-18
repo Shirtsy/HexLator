@@ -56,6 +56,7 @@ Numerical Reflection           //Pattern via name
 @gate("id")                    //Gate via string
 @entity_type("type")           //Entity type via string
 @iota_type("type")             //Iota type via string
+@item_type("type", isItem)     //Item and Block types via string and bool
 @mote("moteUuid", "itemID")    //Mote via strings
 @matrix(col, row, [matrix])    //Matrix
 ```
