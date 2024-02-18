@@ -167,7 +167,7 @@ local identRegistry = {
             num = num * -1
             angles = "dedd"
         end
-        for i=0,num do
+        for i=1,num do
             angles = angles .. "w"
         end
         local returnTable =  {
