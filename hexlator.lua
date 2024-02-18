@@ -101,6 +101,10 @@ local identRegistry = {
         local str = getBalancedParens(s, token["start"])
         return {["entityType"] = str}
     end,
+    ["@item_type"] = function(s, token)
+        local str = getBalancedParens(s, token["start"])
+        return {["itemType"] = str}
+    end,
     ["@entity"] = function(s, token)
         local str = getBalancedParens(s, token["start"])
         return {["uuid"] = str}
