@@ -250,7 +250,7 @@ local stringProccessRegistry = {
         fileName = string.gsub(fileName,"\n","")
         url = string.gsub(url,"\n","")
 
-        local filePath = "/"..fileName
+        local filePath = "/"..getRunningPath().."temp/"..fileName
         if fs.exists(filePath) then
             vPrint("Deleting "..filePath.."...")
             shell.run("delete", filePath)
@@ -268,9 +268,9 @@ local stringProccessRegistry = {
         
         local out =  s:sub(1,token["start"]-1).."\n"..content.."\n"..s:sub(lastC2+1)
 
-        local debug = fs.open(getRunningPath().."debug", "w")
-        debug.write(out)
-        debug.close()
+        --local debug = fs.open(getRunningPath().."debug", "w")
+        --debug.write(out)
+       --debug.close()
 
         return out
     end,
@@ -432,6 +432,9 @@ local function compile(str, stripped, verbose)
     -- Strip line comments from string
     str = string.gsub(str, "// .-\n", "")
 
+    -- Create temp folder for #wget commands
+    shell.execute("mkdir", "/"..getRunningPath().."temp")
+
     -- Replace string with version of itself with the specified file contents/function inside instead
     vPrint("Parsing string processes...")
     local search = sortTokens(tokenSearch(str, stringProccessRegistry))
@@ -440,6 +443,9 @@ local function compile(str, stripped, verbose)
         str = runTokenFunc(str, stringProccessRegistry, single)
         search = sortTokens(tokenSearch(str, stringProccessRegistry))
     end
+
+    -- Delete temp folder for #wget commands
+    shell.execute("delete", "/"..getRunningPath().."temp")
 
     local searches = {}
 
