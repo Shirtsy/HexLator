@@ -417,20 +417,10 @@ local function compileChunk(tokens)
     return returnVal
 end
 
-local function compile(str, stripped, verbose)
-    if verbose ~= nil then
-        gVerb = verbose
-    end
-    vPrint("Compiling...")
-    local reg
-    if stripped == true then
-        reg = strippedRegistry
-    else
-        reg = symbolRegistry
-    end
 
+local function stringProcess(s)
     -- Strip line comments from string
-    str = string.gsub(str, "// .-\n", "")
+    local str = string.gsub(s, "// .-\n", "")
 
     -- Create temp folder for #wget commands
     shell.execute("mkdir", "/"..getRunningPath().."temp")
@@ -446,6 +436,29 @@ local function compile(str, stripped, verbose)
 
     -- Delete temp folder for #wget commands
     shell.execute("delete", "/"..getRunningPath().."temp")
+
+    local debug = fs.open(getRunningPath().."debug", "w")
+    debug.write(str)
+    debug.close()
+
+    return str
+end
+
+
+local function compile(str, stripped, verbose)
+    if verbose ~= nil then
+        gVerb = verbose
+    end
+    vPrint("Compiling...")
+    local reg
+    if stripped == true then
+        reg = strippedRegistry
+    else
+        reg = symbolRegistry
+    end
+
+    -- Process string to remove comments and embed files and functions
+    str = stringProcess(str)
 
     local searches = {}
 
@@ -490,6 +503,7 @@ end
 
 return {
     compile = compile,
+    stringProcess = stringProcess,
     writeToFocus = writeToFocus,
     symbolRegistry = symbolRegistry,
     identRegistry = identRegistry
