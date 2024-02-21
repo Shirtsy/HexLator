@@ -282,7 +282,23 @@ local stringProccessRegistry = {
         local out = s:sub(1,token["start"]-1) .. s:sub(lastC2+1)
 
         reg["$"..funcName] = function(s, token)
-            local out2 =  s:sub(1,token["start"]-1).."\n"..funcBody.."\n"..s:sub(token["end"]+2)
+            local funcStr = funcBody
+
+            local argCounter=1
+            local lastC = token["start"]
+            while argCounter < 10 do
+                local i, j = string.find(funcStr, string.format("<%s>",argCounter))
+                if i then
+                    local arg,_,lastChar = getBalancedParens(s, lastC)
+                    lastC = lastChar
+                    funcStr = funcStr:sub(1,i-1).." "..arg.." "..funcStr:sub(j+1)
+                    argCounter = argCounter + 1
+                else
+                    break
+                end
+            end
+
+            local out2 =  s:sub(1,token["start"]-1).."\n"..funcStr.."\n"..s:sub(lastC+2)
             return out2
         end
 

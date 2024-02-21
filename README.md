@@ -62,7 +62,7 @@ Numerical Reflection           //Pattern via name
 ```
 
 ### Macros/Functions
-```#def(<name>)(<body>)``` will result in all instances of ```$<name>``` being replaced with ```<body>```. This can be paired with ```#file``` to load a 'library' of functions from another file to be made available in your current file.
+```#def(<name>)(<body>)``` will result in all instances of ```$<name>``` being replaced with ```<body>```. This can be paired with ```#file``` to load a 'library' of functions from another file to be made available in your current file. Functions can accept arguments by including ```<1>, <2>, ...``` within the body of the function. Arguments can be passed to the function as ```$func(arg1)(arg2)...```.
 
 ```#file(<filename1>, <filename2>, ...)``` will look for ```<filename>```(s) and replace itself with their contents in order. This can be used to directly insert data at a given position, but is more commonly used to include 'libraries'. The following is an example, assuming that ```example.hexpattern``` is to be compiled.
 
