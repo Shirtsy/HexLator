@@ -68,6 +68,8 @@ Numerical Reflection           //Pattern via name
 
 ```#wget(<filepath>)(<url>)``` will attempt to use the wget utility packaged with the default ComputerCraft ROM to download and load a given file at time of compilation (overwriting any existing file at the same path). This makes it far easier to set up a build environment, and can allow for a complex hex AND its dependancies to all be downloaded with a single HexGet command.
 
+If statements and for loops are not implicit constructs, but they are implemented as functions and documented in [syntax_utils.hexpattern](https://github.com/Shirtsy/HexLator/raw/main/utils/syntax_utils.hexpattern), you can make them available to code by including ```#wget(syntax_utils.hexpattern)(https://github.com/Shirtsy/HexLator/raw/dev/utils/syntax_utils.hexpattern)``` in your file.
+
 example.hexpattern:
 ```
 #file(counter.hexpattern)
