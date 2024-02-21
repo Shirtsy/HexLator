@@ -1,0 +1,23 @@
+// if (bool) do (patterns) else (patterns)
+// Evaluates the second arg if true, evaluates the third if false
+#def(if)(
+    <1>
+    {
+        <2>
+    }
+    {
+        <3>
+    }
+    Augur's Exaltation
+    Hermes' Gambit
+)
+
+// for_each in (list) do (patterns)
+// Runs Thoth's on the given list and pattern list, returning a list containing all outputs
+#def(for_each)(
+    {
+        <2>
+    }
+    <1>
+    Thoth's Gambit
+)
