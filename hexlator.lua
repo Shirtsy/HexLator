@@ -213,7 +213,8 @@ local identRegistry = {
         return returnTable
     end,
 }
-
+identRegistry["Bookkeepers_Gambit"] = identRegistry["Bookkeeper's Gambit"]
+identRegistry["Numerical_Reflection"] = identRegistry["Numerical Reflection"]
 
 --Index of tokens that process the overall program string, and thus have to occur before other tokenization
 local stringProccessRegistry = {
