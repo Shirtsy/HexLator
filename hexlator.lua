@@ -58,8 +58,8 @@ end
 strippedRegistry["{"] = strippedRegistry["Introspection"]
 strippedRegistry["}"] = strippedRegistry["Retrospection"]
 strippedRegistry[">>"] = strippedRegistry["Flocks_Disintegration"]
-strippedRegistry["Bookkeepers_Gambit"] = true
-strippedRegistry["Numerical_Reflection"] = true
+strippedRegistry["Bookkeepers_Gambit"] = nil
+strippedRegistry["Numerical_Reflection"] = nil
 
 -- Given a string and start location, returns everything within a balanced set of parentheses, as well
 -- as the start and end locations
@@ -213,8 +213,6 @@ local identRegistry = {
         return returnTable
     end,
 }
-identRegistry["Bookkeepers_Gambit"] = identRegistry["Bookkeeper's Gambit"]
-identRegistry["Numerical_Reflection"] = identRegistry["Numerical Reflection"]
 
 --Index of tokens that process the overall program string, and thus have to occur before other tokenization
 local stringProccessRegistry = {
