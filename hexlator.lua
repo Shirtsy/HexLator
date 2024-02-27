@@ -58,8 +58,8 @@ end
 strippedRegistry["{"] = strippedRegistry["Introspection"]
 strippedRegistry["}"] = strippedRegistry["Retrospection"]
 strippedRegistry[">>"] = strippedRegistry["Flocks_Disintegration"]
-strippedRegistry["Bookkeepers_Gambit"] = nil
-strippedRegistry["Numerical_Reflection"] = nil
+strippedRegistry["Bookkeepers_Gambit"] = true
+strippedRegistry["Numerical_Reflection"] = true
 
 -- Given a string and start location, returns everything within a balanced set of parentheses, as well
 -- as the start and end locations
