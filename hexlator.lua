@@ -436,15 +436,13 @@ local function stringProcess(s)
     -- Delete temp folder for #wget commands
     shell.execute("delete", "/"..getRunningPath().."temp")
 
-    local debug = fs.open(getRunningPath().."debug", "w")
-    debug.write(str)
-    debug.close()
+    
 
     return str
 end
 
 
-local function compile(str, stripped, verbose)
+local function compile(str, stripped, verbose, debug_output)
     if verbose ~= nil then
         gVerb = verbose
     end
@@ -458,6 +456,12 @@ local function compile(str, stripped, verbose)
 
     -- Process string to remove comments and embed files and functions
     str = stringProcess(str)
+
+    if debug_output == true then
+        local f = fs.open(getRunningPath().."debug.txt", "w")
+        f.write(str)
+        f.close()
+    end
 
     local searches = {}
 

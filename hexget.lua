@@ -11,10 +11,10 @@ sleep(0.5)
 
 local tArgs = { ... }
 
-local run = false
-if tArgs[1] == "run" then
+local debug = false
+if tArgs[1] == "debug" then
     table.remove(tArgs, 1)
-    run = true
+    debug = true
 end
 
 if #tArgs < 1 then
@@ -77,7 +77,9 @@ else
     if not res then return end
 
     local hexlator = require("hexlator")
-    local compiled = hexlator.compile(res)
+    local stripped = false
+    local verbose = true
+    local compiled = hexlator.compile(res, stripped, verbose, debug)
     hexlator.writeToFocus(compiled)
 end
 
