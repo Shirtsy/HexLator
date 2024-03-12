@@ -15,6 +15,7 @@ local debug = false
 if tArgs[1] == "debug" then
     table.remove(tArgs, 1)
     debug = true
+    print("DEBUG OUTPUT ENABLED")
 end
 
 if #tArgs < 1 then
