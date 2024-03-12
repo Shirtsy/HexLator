@@ -58,29 +58,14 @@ local function get(sUrl)
     return sResponse or ""
 end
 
-if run then
-    local res = get(url)
-    if not res then return end
+local res = get(url)
+if not res then return end
 
-    local func, err = load(res, getFilename(url), "t", _ENV)
-    if not func then
-        printError(err)
-        return
-    end
+local hexlator = require("hexlator")
+local stripped = false
+local verbose = true
+local compiled = hexlator.compile(res, stripped, verbose, debug)
+hexlator.writeToFocus(compiled)
 
-    local ok, err = pcall(func, table.unpack(tArgs))
-    if not ok then
-        printError(err)
-    end
-else
-    local res = get(url)
-    if not res then return end
-
-    local hexlator = require("hexlator")
-    local stripped = false
-    local verbose = true
-    local compiled = hexlator.compile(res, stripped, verbose, debug)
-    hexlator.writeToFocus(compiled)
-end
 
 return {version = version}
