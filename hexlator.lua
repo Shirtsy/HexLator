@@ -342,6 +342,7 @@ local function tokenSearch(s, registry)
     return tokens
 end
 
+
 -- Sorts a list a tokens to occur in the order of their appearance in the raw string
 local function sortTokens(t)
     local keys = {}
@@ -441,6 +442,44 @@ local function stringProcess(s)
     return str
 end
 
+local function removeOverlappingTokens(tokens)
+    -- Create a deep copy of the input array
+    local copyTokens = {}
+    for i, token in ipairs(tokens) do
+        copyTokens[i] = {
+            ["start"] = token["start"],
+            ["end"] = token["end"],
+            ["content"] = token["content"],
+            ["value"] = token["value"]
+        }
+    end
+    
+    local i = 1
+    while i < #copyTokens do
+        local current = copyTokens[i]
+        local next = copyTokens[i + 1]
+        
+        -- Check if current token overlaps with the next one
+        if current["end"] >= next["start"] then
+            -- Determine which token is shorter
+            local currentLength = current["end"] - current["start"]
+            local nextLength = next["end"] - next["start"]
+            
+            if currentLength <= nextLength then
+                -- Remove the current (shorter) token
+                table.remove(copyTokens, i)
+            else
+                -- Remove the next (shorter) token
+                table.remove(copyTokens, i + 1)
+            end
+        else
+            -- Move to the next token if no overlap
+            i = i + 1
+        end
+    end
+    
+    return copyTokens
+end
 
 local function compile(str, stripped, verbose, debug_output)
     if verbose ~= nil then
@@ -476,7 +515,7 @@ local function compile(str, stripped, verbose, debug_output)
     for _,v in pairs(searches["symbols"]) do
         setSymbolValue(str, reg, v)
     end
-    local tokens = sortTokens(combineTables(searches))
+    local tokens = removeOverlappingTokens(sortTokens(combineTables(searches)))
     local output = compileChunk(tokens)
     --print(#output)
     return output
