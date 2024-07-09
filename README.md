@@ -7,7 +7,7 @@ The Focal Port from https://github.com/SamsTheNerd/ducky-periphs is required to 
 ## Installation
 Download and run the installer on a ComputerCraft computer (this will replace the existing startup.lua file at root):
 ```
-wget https://raw.githubusercontent.com/Shirtsy/HexLator/main/install_hexlator.lua
+wget run https://raw.githubusercontent.com/Shirtsy/HexLator/main/install_hexlator.lua
 ```
 
 ## Usage example
