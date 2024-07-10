@@ -1,0 +1,47 @@
+// Initialize registry with set size
+// $initialize_registry(int) -> void
+#def(initialize_registry)(
+    Nullary Reflection
+    Consideration: @num(<1>)
+    Gemini Gambit
+    Flock's Reflection
+    Flock's Gambit
+    Huginn's Gambit
+)
+
+// Read given index from registry
+// $read(int) -> stack_iota
+#def(read)(
+    Muninn's Reflection
+    Consideration: @num(<1>)
+    Selection Distillation
+)
+
+// Write to index in registry
+// $write(int)(stack_iota) -> void
+#def(write)(
+    Muninn's Reflection
+    Consideration: @num(<1>)
+    { <2> } >>
+    Surgeon's Exaltation
+)
+
+// $raycast_mantra -> stack_iota(vec)
+#def(raycast_mantra)(
+    Mind's Reflection
+    Compass' Purification
+    Mind's Reflection
+    Alidade's Purification
+    Archer's Distillation
+)
+
+// $explode(stack_iota(vec))(stack_iota(num))
+#def(explode)(
+    <1>
+    <2>
+    Explosion
+)
+
+$initialize_registry(10)
+$write(0)(@num(4))
+$explode($raycast_mantra)($read(0))
