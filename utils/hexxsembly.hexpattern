@@ -36,12 +36,23 @@
 )
 
 // $explode(stack_iota(vec))(stack_iota(num))
-#def(explode)(
+#def(explosion)(
     <1>
     <2>
     Explosion
 )
 
-$initialize_registry(10)
-$write(0)(@num(4))
-$explode($raycast_mantra)($read(0))
+#def(vector)(0)
+#def(power)(1)
+$initialize_registry(2)
+$write(0)(
+    $archers_distillation(
+        $compass_purification($minds_reflection)
+    )(
+        $alidades_purification($minds_reflection)
+    )
+)
+$write(1)(
+    @num(4)
+)
+$explosion($read(0))($read(1))
