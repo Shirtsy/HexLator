@@ -45,14 +45,14 @@
 #def(vector)(0)
 #def(power)(1)
 $initialize_registry(2)
-$write(0)(
+$write($vector)(
     $archers_distillation(
         $compass_purification($minds_reflection)
     )(
         $alidades_purification($minds_reflection)
     )
 )
-$write(1)(
+$write($power)(
     @num(4)
 )
-$explosion($read(0))($read(1))
+$explosion($read($vector))($read($power))
