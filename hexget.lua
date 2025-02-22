@@ -36,30 +36,33 @@ local function getFilename(sUrl)
     return sUrl:match("/([^/]+)$")
 end
 
-local function get(sUrl)
-    -- Check if the URL is valid
-    local ok, err = http.checkURL(url)
-    if not ok then
-        printError(err or "Invalid URL.")
-        return
-    end
+-- local function get(sUrl)
+--     -- Check if the URL is valid
+--     local ok, err = http.checkURL(url)
+--     if not ok then
+--         printError(err or "Invalid URL.")
+--         return
+--     end
 
-    write("Connecting to " .. sUrl .. "... ")
+--     write("Connecting to " .. sUrl .. "... ")
 
-    local response = http.get(sUrl , nil , true)
-    if not response then
-        print("Failed.")
-        return nil
-    end
+--     local response = http.get(sUrl , nil , true)
+--     if not response then
+--         print("Failed.")
+--         return nil
+--     end
 
-    print("Success.")
+--     print("Success.")
 
-    local sResponse = response.readAll()
-    response.close()
-    return sResponse or ""
-end
+--     local sResponse = response.readAll()
+--     response.close()
+--     return sResponse or ""
+-- end
 
-local res = get(url)
+local github = require("github")
+--local res = get(url)
+spell_url = github.convert_url(url)
+local res = github.api_response(spell_url).content
 if not res then return end
 
 local hexlator = require("hexlator")

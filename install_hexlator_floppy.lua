@@ -12,7 +12,7 @@ local raw_url = "https://raw.githubusercontent.com/Vizoee/HexLator/main/"
 
 local install_path
 if not args[2] then
-    install_path = "/programfiles/hexlator/"
+    install_path = "/disk/hexlator/"
 else
     install_path = args[2].."/hexlator/"
 end
@@ -39,4 +39,9 @@ shell.execute("delete", "/startup.lua")
 local file = fs.open("startup.lua","w")
 file.write(string.format('shell.setAlias("hexget", "%shexget.lua") shell.setAlias("hexxyedit", "%shexxyedit.lua") shell.setAlias("github", "%sgithub.lua")',install_path, install_path, install_path))
 file.close()
+
+local floppy_file = fs.open(install_path.."startup.lua","w")
+floppy_file.write(string.format('shell.execute("wget", "%s/symbol-registry.json", "/programfiles/hexlator/symbol-registry.json")', raw_url))
+floppy_file.close()
+
 os.reboot()

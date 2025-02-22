@@ -3,6 +3,8 @@ local version = "0.9.3"
 --controls all print outputs
 local gVerb = true
 
+local github = require("github")
+
 local function vPrint(s)
     if gVerb == true then
         print(s)
@@ -16,7 +18,12 @@ local function getRunningPath()
 end
 
 --load symbol-registry.json
-local srFile = fs.open(getRunningPath() .. "symbol-registry.json", "r")
+local srFile
+if fs.exists(getRunningPath() .. "symbol-registry.json") then
+    srFile = fs.open(getRunningPath() .. "symbol-registry.json", "r")
+else
+    srFile = fs.open("/programfiles/hexlator/" .. "symbol-registry.json", "r")
+end
 local srRaw = textutils.unserialiseJSON(srFile.readAll())
 if not srFile then
     vPrint("Could not find symbol-registry.json in the current directory")
@@ -66,6 +73,11 @@ strippedRegistry["Numerical_Reflection"] = nil
 local function getBalancedParens(s, startLoc)
     local firstC, lastC, str = string.find(s, "(%b())", startLoc)
     return string.sub(str, 2, -2), firstC, lastC
+end
+
+local function getColonParens(s, startLoc)
+    local firstC, lastC, str = string.find(s, ":%s*([A-Za-z0-9_%-]+)", startLoc)
+    return str, firstC, lastC
 end
 
 -- Given a string, returns a table of strings with commas as delim
@@ -171,7 +183,7 @@ local identRegistry = {
     ["%["] = true,
     ["%]"] = true,
     ["Numerical Reflection"] = function(s, token)
-        local str = getBalancedParens(s, token["start"])
+        local str = getColonParens(s, token["start"])
         local num = tonumber(str)
         local angles
         if num >= 0 then
@@ -196,11 +208,14 @@ local identRegistry = {
             ["vv"] = "da",
             ["v-"] = "e"
         }
-        local str = getBalancedParens(s, token["start"])
+        local str = getColonParens(s, token["start"])
         local angles = ""
         if str == "v" then
             angles = "a"
         else
+            if str:sub(1, 1) == "v" then
+                angles = "a"
+            end
             for i=1,#str-1 do
                 local sub = str:sub(i, i+1)
                 angles = angles..combos[sub]
@@ -212,6 +227,51 @@ local identRegistry = {
         }
         return returnTable
     end,
+    ["Sekhmet's Gambit"] = function(s, token)
+        local str = getColonParens(s, token["start"])
+        local num = tonumber(str)
+        local angles = "qaqdd"
+        for i=1,num do
+            local dir = "q"
+            if i % 2 == 0 then
+                dir = "e"
+            end
+            angles = angles .. dir
+        end
+        local returnTable =  {
+            ["startDir"] = "WEST",
+            ["angles"] = angles,
+        }
+        return returnTable
+    end,
+    ["Geb's Gambit"] = function(s, token)
+        local str = getColonParens(s, token["start"])
+        local num = tonumber(str)
+        local angles = "aaeaad"
+        for i=3,num do
+            local dir = "w"
+            angles = angles .. dir
+        end
+        local returnTable =  {
+            ["startDir"] = "WEST",
+            ["angles"] = angles,
+        }
+        return returnTable
+    end,
+    ["Nut's Gambit"] = function(s, token)
+        local str = getColonParens(s, token["start"])
+        local num = tonumber(str)
+        local angles = "aawdde"
+        for i=3,num do
+            local dir = "w"
+            angles = angles .. dir
+        end
+        local returnTable =  {
+            ["startDir"] = "WEST",
+            ["angles"] = angles,
+        }
+        return returnTable
+    end
 }
 
 --Index of tokens that process the overall program string, and thus have to occur before other tokenization
@@ -270,6 +330,34 @@ local stringProccessRegistry = {
         --local debug = fs.open(getRunningPath().."debug", "w")
         --debug.write(out)
        --debug.close()
+
+        return out
+    end,
+    ["#git"] = function(s, token)
+        local fileName = getBalancedParens(s, token["start"])
+        --strip out newlines
+        fileName = string.gsub(fileName,"\n","")
+
+        if string.match(fileName, "^/") then
+            url = spell_url:match("(.-contents/)"):match("^(.-)/$")
+        else
+            url = spell_url:match("(.*/)")
+        end
+
+        local file_url = url .. fileName
+        vPrint("Downloading "..file_url)
+        
+        local content = github.api_response(file_url).content
+
+        vPrint("Inserting "..fileName)
+        -- local out =  s:sub(1,token["start"]-1).."\n"..content.."\n"..s:sub(lastC2+1)
+        local firstChar = token["start"]
+        local lastChar = token["end"] + #fileName
+        local out =  s:sub(1,firstChar-1).."\n"..content.."\n"..s:sub(lastChar+1)
+
+        --local debug = fs.open(getRunningPath().."debug", "w")
+        --debug.write(out)
+        --debug.close()
 
         return out
     end,
@@ -420,7 +508,8 @@ end
 
 local function stringProcess(s)
     -- Strip line comments from string
-    local str = string.gsub(s, "// .-\n", "")
+    local str = string.gsub(s, "//.-\n", "")
+    str = string.gsub(str, "/%*.-%*/", "")
 
     -- Create temp folder for #wget commands
     shell.execute("mkdir", "/"..getRunningPath().."temp")
